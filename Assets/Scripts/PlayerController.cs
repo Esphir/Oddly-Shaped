@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;  // Add this to interact with UI elements
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
         {"GreenLens", "GreenWall"}
     };
 
-    // Reference to the UI Image that will overlay the color
+    // Reference to the UI Image that overlays the color
     public Image lensOverlayImage;
 
     // Colors for each lens
@@ -36,7 +36,6 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
 
-        // Set the initial lens overlay to none (transparent)
         UpdateLensOverlay("None");
     }
 
@@ -125,7 +124,6 @@ public class PlayerController : MonoBehaviour
         equippedLens = lensName;
         Debug.Log("Equipped: " + lensName);
 
-        // Update the color overlay based on the lens
         UpdateLensOverlay(lensName);
 
         // Disable collisions for relevant walls based on the lens
