@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public Transform playerCamera;
     public float mouseSensitivity = 2f;
     public float holdDistance = 0.7f;
+    public float raycastDistance = 3f; // The distance of the raycast to detect items
 
     private Rigidbody rb;
     private GameObject heldObject;
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
         LookAround();
         UpdateHeldObjectPosition();
 
+        // Try picking up an item if the player is looking at one
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (heldObject == null)
@@ -53,6 +55,7 @@ public class PlayerController : MonoBehaviour
                 DropObject();
         }
 
+        // Equip lenses
         if (Input.GetKeyDown(KeyCode.Alpha1)) EquipLens("RedLens");
         if (Input.GetKeyDown(KeyCode.Alpha2)) EquipLens("BlueLens");
         if (Input.GetKeyDown(KeyCode.Alpha3)) EquipLens("GreenLens");
@@ -82,17 +85,19 @@ public class PlayerController : MonoBehaviour
 
     void PickUpObject()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 2f);
-        foreach (Collider collider in colliders)
+        RaycastHit hit;
+
+        // Cast a ray from the camera's position in the forward direction
+        if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, raycastDistance))
         {
-            if (collider.CompareTag("PickUp"))
+            if (hit.collider.CompareTag("PickUp")) // Check if the object has the "PickUp" tag
             {
-                heldObject = collider.gameObject;
+                heldObject = hit.collider.gameObject;
                 heldObject.transform.SetParent(null);
                 heldObject.transform.localRotation = Quaternion.identity;
                 heldObject.GetComponent<Rigidbody>().isKinematic = true;
                 UpdateHeldObjectPosition();
-                break;
+                Debug.Log("Picked up: " + heldObject.name);
             }
         }
     }
@@ -113,7 +118,7 @@ public class PlayerController : MonoBehaviour
         {
             heldObject.transform.position = Vector3.Lerp(
                 heldObject.transform.position,
-                playerCamera.position + playerCamera.forward * holdDistance,
+                playerCamera.position + playerCamera.forward,
                 Time.deltaTime * 10f
             );
         }
