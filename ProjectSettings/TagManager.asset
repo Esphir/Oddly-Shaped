@@ -8,19 +8,17 @@ TagManager:
   - RedWall
   - BlueWall
   - GreenWall
-  - RedItem
-  - BlueItem
-  - GreenItem
+  - Floor
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Hold
   - Water
   - UI
-  - RedItem
-  - BlueItem
-  - GreenItem
+  - Red
+  - Blue
+  - Green
   - 
   - 
   - 

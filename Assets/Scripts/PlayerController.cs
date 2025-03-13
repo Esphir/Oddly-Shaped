@@ -5,15 +5,11 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public Transform holdPosition;
-    public Transform playerCamera;
     public float mouseSensitivity = 2f;
     public float holdDistance = 0.7f;
     public float raycastDistance = 3f; // The distance of the raycast to detect items
 
     private Rigidbody rb;
-    private GameObject heldObject;
-    private float rotationX = 0f;
 
     private string equippedLens = "None";
     private Dictionary<string, string> lensWallMapping = new Dictionary<string, string>()
@@ -43,17 +39,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         MovePlayer();
-        LookAround();
-        UpdateHeldObjectPosition();
-
-        // Try picking up an item if the player is looking at one
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (heldObject == null)
-                PickUpObject();
-            else
-                DropObject();
-        }
 
         // Equip lenses
         if (Input.GetKeyDown(KeyCode.Alpha1)) EquipLens("RedLens");
@@ -69,59 +54,6 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveDirection = transform.right * moveX + transform.forward * moveZ;
         rb.velocity = new Vector3(moveDirection.x * moveSpeed, rb.velocity.y, moveDirection.z * moveSpeed);
-    }
-
-    void LookAround()
-    {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
-
-        rotationX -= mouseY;
-        rotationX = Mathf.Clamp(rotationX, -90f, 90f);
-
-        playerCamera.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        transform.Rotate(Vector3.up * mouseX);
-    }
-
-    void PickUpObject()
-    {
-        RaycastHit hit;
-
-        // Cast a ray from the camera's position in the forward direction
-        if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, raycastDistance))
-        {
-            if (hit.collider.CompareTag("PickUp")) // Check if the object has the "PickUp" tag
-            {
-                heldObject = hit.collider.gameObject;
-                heldObject.transform.SetParent(null);
-                heldObject.transform.localRotation = Quaternion.identity;
-                heldObject.GetComponent<Rigidbody>().isKinematic = true;
-                UpdateHeldObjectPosition();
-                Debug.Log("Picked up: " + heldObject.name);
-            }
-        }
-    }
-
-    void DropObject()
-    {
-        if (heldObject != null)
-        {
-            heldObject.GetComponent<Rigidbody>().isKinematic = false;
-            heldObject.transform.SetParent(null);
-            heldObject = null;
-        }
-    }
-
-    void UpdateHeldObjectPosition()
-    {
-        if (heldObject != null)
-        {
-            heldObject.transform.position = Vector3.Lerp(
-                heldObject.transform.position,
-                playerCamera.position + playerCamera.forward,
-                Time.deltaTime * 10f
-            );
-        }
     }
 
     void EquipLens(string lensName)
