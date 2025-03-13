@@ -10,8 +10,7 @@ public class PlayerController : MonoBehaviour
     public float raycastDistance = 3f; // The distance of the raycast to detect items
 
     private Rigidbody rb;
-
-    private string equippedLens = "None";
+    public static string EquippedLens { get; private set; } = "None";
     private Dictionary<string, string> lensWallMapping = new Dictionary<string, string>()
     {
         {"RedLens", "RedWall"},
@@ -58,7 +57,7 @@ public class PlayerController : MonoBehaviour
 
     void EquipLens(string lensName)
     {
-        equippedLens = lensName;
+        EquippedLens = lensName;
         Debug.Log("Equipped: " + lensName);
 
         UpdateLensOverlay(lensName);
@@ -67,7 +66,7 @@ public class PlayerController : MonoBehaviour
         foreach (var pair in lensWallMapping)
         {
             GameObject[] walls = GameObject.FindGameObjectsWithTag(pair.Value);
-            bool shouldDisableCollision = pair.Key == equippedLens;
+            bool shouldDisableCollision = pair.Key == EquippedLens;
 
             foreach (GameObject wall in walls)
             {

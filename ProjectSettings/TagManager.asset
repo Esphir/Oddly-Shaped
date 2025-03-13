@@ -9,6 +9,7 @@ TagManager:
   - BlueWall
   - GreenWall
   - Floor
+  - Void
   layers:
   - Default
   - TransparentFX
