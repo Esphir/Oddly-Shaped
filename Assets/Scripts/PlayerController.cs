@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public float mouseSensitivity = 2f;
     public float holdDistance = 0.7f;
     public float raycastDistance = 3f; // The distance of the raycast to detect items
+    public GameObject CanvasObject;
 
     private Rigidbody rb;
     public static string EquippedLens { get; private set; } = "None";
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        CanvasObject.SetActive(true);
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
 
