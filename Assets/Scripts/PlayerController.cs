@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;  // Add this to interact with UI elements
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,10 +22,22 @@ public class PlayerController : MonoBehaviour
         {"GreenLens", "GreenWall"}
     };
 
+    // Reference to the UI Image that will overlay the color
+    public Image lensOverlayImage;
+
+    // Colors for each lens
+    private Color redLensColor = new Color(1f, 0f, 0f, 0.5f); // Red with transparency
+    private Color blueLensColor = new Color(0f, 0f, 1f, 0.5f); // Blue with transparency
+    private Color greenLensColor = new Color(0f, 1f, 0f, 0.5f); // Green with transparency
+    private Color noneLensColor = new Color(0f, 0f, 0f, 0f); // Transparent (no lens effect)
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
+
+        // Set the initial lens overlay to none (transparent)
+        UpdateLensOverlay("None");
     }
 
     void Update()
@@ -112,6 +125,10 @@ public class PlayerController : MonoBehaviour
         equippedLens = lensName;
         Debug.Log("Equipped: " + lensName);
 
+        // Update the color overlay based on the lens
+        UpdateLensOverlay(lensName);
+
+        // Disable collisions for relevant walls based on the lens
         foreach (var pair in lensWallMapping)
         {
             GameObject[] walls = GameObject.FindGameObjectsWithTag(pair.Value);
@@ -125,6 +142,28 @@ public class PlayerController : MonoBehaviour
                 else
                     Debug.LogWarning("Wall " + wall.name + " does not have a collider!");
             }
+        }
+    }
+
+    void UpdateLensOverlay(string lensName)
+    {
+        switch (lensName)
+        {
+            case "RedLens":
+                lensOverlayImage.color = redLensColor;
+                break;
+            case "BlueLens":
+                lensOverlayImage.color = blueLensColor;
+                break;
+            case "GreenLens":
+                lensOverlayImage.color = greenLensColor;
+                break;
+            case "None":
+                lensOverlayImage.color = noneLensColor;
+                break;
+            default:
+                lensOverlayImage.color = noneLensColor;
+                break;
         }
     }
 }
