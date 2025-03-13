@@ -10,6 +10,7 @@ TagManager:
   - GreenWall
   - Floor
   - Void
+  - Door
   layers:
   - Default
   - TransparentFX
