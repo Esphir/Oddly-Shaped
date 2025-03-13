@@ -122,6 +122,8 @@ public class PlayerController : MonoBehaviour
                 Collider wallCollider = wall.GetComponent<Collider>();
                 if (wallCollider != null)
                     wallCollider.enabled = !shouldDisableCollision;
+                else
+                    Debug.LogWarning("Wall " + wall.name + " does not have a collider!");
             }
         }
     }

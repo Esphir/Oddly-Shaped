@@ -8,6 +8,9 @@ TagManager:
   - RedWall
   - BlueWall
   - GreenWall
+  - RedItem
+  - BlueItem
+  - GreenItem
   layers:
   - Default
   - TransparentFX
