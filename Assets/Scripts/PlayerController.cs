@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
@@ -6,10 +7,19 @@ public class PlayerController : MonoBehaviour
     public Transform holdPosition;
     public Transform playerCamera;
     public float mouseSensitivity = 2f;
+    public float holdDistance = 0.7f;
 
     private Rigidbody rb;
     private GameObject heldObject;
     private float rotationX = 0f;
+
+    private string equippedLens = "None";
+    private Dictionary<string, string> lensWallMapping = new Dictionary<string, string>()
+    {
+        {"RedLens", "RedWall"},
+        {"BlueLens", "BlueWall"},
+        {"GreenLens", "GreenWall"}
+    };
 
     void Start()
     {
@@ -21,6 +31,8 @@ public class PlayerController : MonoBehaviour
     {
         MovePlayer();
         LookAround();
+        UpdateHeldObjectPosition();
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (heldObject == null)
@@ -28,6 +40,11 @@ public class PlayerController : MonoBehaviour
             else
                 DropObject();
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) EquipLens("RedLens");
+        if (Input.GetKeyDown(KeyCode.Alpha2)) EquipLens("BlueLens");
+        if (Input.GetKeyDown(KeyCode.Alpha3)) EquipLens("GreenLens");
+        if (Input.GetKeyDown(KeyCode.F)) EquipLens("None");
     }
 
     void MovePlayer()
@@ -59,10 +76,10 @@ public class PlayerController : MonoBehaviour
             if (collider.CompareTag("PickUp"))
             {
                 heldObject = collider.gameObject;
-                heldObject.transform.SetParent(holdPosition);
-                heldObject.transform.localPosition = new Vector3(0, 0, 1.5f);
+                heldObject.transform.SetParent(null);
                 heldObject.transform.localRotation = Quaternion.identity;
                 heldObject.GetComponent<Rigidbody>().isKinematic = true;
+                UpdateHeldObjectPosition();
                 break;
             }
         }
@@ -75,6 +92,37 @@ public class PlayerController : MonoBehaviour
             heldObject.GetComponent<Rigidbody>().isKinematic = false;
             heldObject.transform.SetParent(null);
             heldObject = null;
+        }
+    }
+
+    void UpdateHeldObjectPosition()
+    {
+        if (heldObject != null)
+        {
+            heldObject.transform.position = Vector3.Lerp(
+                heldObject.transform.position,
+                playerCamera.position + playerCamera.forward * holdDistance,
+                Time.deltaTime * 10f
+            );
+        }
+    }
+
+    void EquipLens(string lensName)
+    {
+        equippedLens = lensName;
+        Debug.Log("Equipped: " + lensName);
+
+        foreach (var pair in lensWallMapping)
+        {
+            GameObject[] walls = GameObject.FindGameObjectsWithTag(pair.Value);
+            bool shouldDisableCollision = pair.Key == equippedLens;
+
+            foreach (GameObject wall in walls)
+            {
+                Collider wallCollider = wall.GetComponent<Collider>();
+                if (wallCollider != null)
+                    wallCollider.enabled = !shouldDisableCollision;
+            }
         }
     }
 }
