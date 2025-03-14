@@ -1,18 +1,18 @@
 using UnityEngine;
 
-public class MaterialChanger : MonoBehaviour
+public class LensMaterialChanger : MonoBehaviour
 {
+    // Assign materials in the Inspector
     public Material redLensMaterial;
     public Material blueLensMaterial;
     public Material greenLensMaterial;
-    public Material defaultMaterial;
 
     private Renderer rend;
 
     void Start()
     {
         rend = GetComponent<Renderer>();
-        UpdateMaterial(PlayerController.EquippedLens);
+        rend.enabled = false; // Start as invisible
     }
 
     void Update()
@@ -26,15 +26,18 @@ public class MaterialChanger : MonoBehaviour
         {
             case "RedLens":
                 rend.material = redLensMaterial;
+                rend.enabled = true;
                 break;
             case "BlueLens":
                 rend.material = blueLensMaterial;
+                rend.enabled = true;
                 break;
             case "GreenLens":
                 rend.material = greenLensMaterial;
+                rend.enabled = true;
                 break;
             default:
-                rend.material = defaultMaterial;
+                rend.enabled = false; // Make invisible when no lens is equipped
                 break;
         }
     }

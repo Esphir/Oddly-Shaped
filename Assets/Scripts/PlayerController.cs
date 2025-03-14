@@ -23,9 +23,9 @@ public class PlayerController : MonoBehaviour
     public Image lensOverlayImage;
 
     // Colors for each lens
-    private Color redLensColor = new Color(1f, 0f, 0f, 0.4f); // Red with transparency
-    private Color blueLensColor = new Color(0f, 0f, 1f, 0.4f); // Blue with transparency
-    private Color greenLensColor = new Color(0f, 1f, 0f, 0.4f); // Green with transparency
+    private Color redLensColor = new Color(1f, 0f, 0f, 0.2f); // Red with transparency
+    private Color blueLensColor = new Color(0f, 0f, 1f, 0.2f); // Blue with transparency
+    private Color greenLensColor = new Color(0f, 1f, 0f, 0.2f); // Green with transparency
     private Color noneLensColor = new Color(0f, 0f, 0f, 0f); // Transparent (no lens effect)
 
     void Start()
