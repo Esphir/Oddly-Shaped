@@ -29,9 +29,18 @@ public class PickUpScript : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, pickUpRange))
                 {
-                    if (hit.transform.CompareTag("PickUp")) // Keep the "PickUp" tag
+                    // Check for "PickUp" tag or crystal tags
+                    if (hit.transform.CompareTag("PickUp"))
                     {
                         PickUpObject(hit.transform.gameObject);
+                    }
+                    else if (hit.transform.CompareTag("OrangeCrystal"))
+                    {
+                        CollectCrystal(hit.transform.gameObject, "Orange");
+                    }
+                    else if (hit.transform.CompareTag("BlueCrystal"))
+                    {
+                        CollectCrystal(hit.transform.gameObject, "Blue");
                     }
                 }
             }
@@ -68,18 +77,26 @@ public class PickUpScript : MonoBehaviour
             heldObj.transform.parent = holdPos.transform;
             heldObj.layer = LayerNumber;
 
-            //  Check for Key component instead of tag
-            if (heldObj.GetComponent<Key>() != null)
-            {
-                Collider keyCollider = heldObj.GetComponent<Collider>();
-                if (keyCollider != null)
-                {
-                    keyCollider.isTrigger = true;
-                }
-            }
-
             Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), true);
         }
+    }
+
+    void CollectCrystal(GameObject crystal, string type)
+    {
+        // Call PlayerController to unlock the lens ability
+        PlayerController playerController = player.GetComponent<PlayerController>();
+
+        if (type == "Orange")
+        {
+            playerController.UnlockLensAbility("Orange");
+        }
+        else if (type == "Blue")
+        {
+            playerController.UnlockLensAbility("Blue");
+        }
+
+        // Make crystal disappear
+        crystal.SetActive(false);
     }
 
     void DropObject()
@@ -88,16 +105,6 @@ public class PickUpScript : MonoBehaviour
         heldObj.layer = 0;
         heldObjRb.isKinematic = false;
         heldObj.transform.parent = null;
-
-        //  Disable trigger if object is a Key
-        if (heldObj.GetComponent<Key>() != null)
-        {
-            Collider keyCollider = heldObj.GetComponent<Collider>();
-            if (keyCollider != null)
-            {
-                keyCollider.isTrigger = false;
-            }
-        }
 
         heldObj = null;
     }
@@ -132,16 +139,6 @@ public class PickUpScript : MonoBehaviour
         heldObjRb.isKinematic = false;
         heldObj.transform.parent = null;
         heldObjRb.AddForce(transform.forward * throwForce);
-
-        //  Disable trigger if object is a Key
-        if (heldObj.GetComponent<Key>() != null)
-        {
-            Collider keyCollider = heldObj.GetComponent<Collider>();
-            if (keyCollider != null)
-            {
-                keyCollider.isTrigger = false;
-            }
-        }
 
         heldObj = null;
     }

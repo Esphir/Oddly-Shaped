@@ -24,7 +24,7 @@ public class LensMaterialChanger : MonoBehaviour
     {
         switch (equippedLens)
         {
-            case "RedLens":
+            case "OrangeLens":
                 rend.material = redLensMaterial;
                 rend.enabled = true;
                 break;

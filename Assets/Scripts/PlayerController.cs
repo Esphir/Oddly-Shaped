@@ -14,19 +14,19 @@ public class PlayerController : MonoBehaviour
     public static string EquippedLens { get; private set; } = "None";
     private Dictionary<string, string> lensWallMapping = new Dictionary<string, string>()
     {
-        {"RedLens", "RedWall"},
-        {"BlueLens", "BlueWall"},
-        {"GreenLens", "GreenWall"}
+        {"OrangeLens", "RedWall"},
+        {"BlueLens", "BlueWall"}
     };
-
 
     public Image lensOverlayImage;
 
-
-    private Color redLensColor = new Color(1f, 0f, 0f, 0.2f); // Red with transparency
-    private Color blueLensColor = new Color(0f, 0f, 1f, 0.2f); // Blue with transparency
-    private Color greenLensColor = new Color(0f, 1f, 0f, 0.2f); // Green with transparency
+    private Color orangeLensColor = new Color(1f, 0.494f, 0.0157f, 0.2f); // Orange (#ff7e04) with transparency
+    private Color blueLensColor = new Color(0.043f, 0.145f, 0.976f, 0.2f); // Blue (#0b25f9) with transparency
     private Color noneLensColor = new Color(0f, 0f, 0f, 0f); // Transparent (no lens effect)
+
+    // Keep track of lens abilities as instance variables
+    private bool hasOrangeLens = false;
+    private bool hasBlueLens = false;
 
     void Start()
     {
@@ -41,9 +41,9 @@ public class PlayerController : MonoBehaviour
     {
         MovePlayer();
 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) EquipLens("RedLens");
-        if (Input.GetKeyDown(KeyCode.Alpha2)) EquipLens("BlueLens");
-        if (Input.GetKeyDown(KeyCode.Alpha3)) EquipLens("GreenLens");
+        // Only equip lens if the player has collected the corresponding crystal
+        if (Input.GetKeyDown(KeyCode.Alpha1) && hasOrangeLens) EquipLens("OrangeLens");
+        if (Input.GetKeyDown(KeyCode.Alpha2) && hasBlueLens) EquipLens("BlueLens");
         if (Input.GetKeyDown(KeyCode.F)) EquipLens("None");
     }
 
@@ -68,14 +68,11 @@ public class PlayerController : MonoBehaviour
     {
         switch (lensName)
         {
-            case "RedLens":
-                lensOverlayImage.color = redLensColor;
+            case "OrangeLens":
+                lensOverlayImage.color = orangeLensColor;
                 break;
             case "BlueLens":
                 lensOverlayImage.color = blueLensColor;
-                break;
-            case "GreenLens":
-                lensOverlayImage.color = greenLensColor;
                 break;
             case "None":
                 lensOverlayImage.color = noneLensColor;
@@ -83,6 +80,21 @@ public class PlayerController : MonoBehaviour
             default:
                 lensOverlayImage.color = noneLensColor;
                 break;
+        }
+    }
+
+    // Call this method when the player picks up a crystal
+    public void UnlockLensAbility(string lensColor)
+    {
+        if (lensColor == "Orange")
+        {
+            hasOrangeLens = true;
+            Debug.Log("Orange lens ability unlocked!");
+        }
+        else if (lensColor == "Blue")
+        {
+            hasBlueLens = true;
+            Debug.Log("Blue lens ability unlocked!");
         }
     }
 }

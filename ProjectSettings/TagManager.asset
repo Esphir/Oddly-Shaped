@@ -11,6 +11,8 @@ TagManager:
   - Floor
   - Void
   - Door
+  - OrangeCrystal
+  - BlueCrystal
   layers:
   - Default
   - TransparentFX
