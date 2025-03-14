@@ -12,7 +12,7 @@ public class LensMaterialChanger : MonoBehaviour
     void Start()
     {
         rend = GetComponent<Renderer>();
-        rend.enabled = false; // Start as invisible
+        rend.enabled = false;
     }
 
     void Update()
@@ -37,7 +37,7 @@ public class LensMaterialChanger : MonoBehaviour
                 rend.enabled = true;
                 break;
             default:
-                rend.enabled = false; // Make invisible when no lens is equipped
+                rend.enabled = false;
                 break;
         }
     }

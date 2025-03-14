@@ -19,10 +19,10 @@ public class PlayerController : MonoBehaviour
         {"GreenLens", "GreenWall"}
     };
 
-    // Reference to the UI Image that overlays the color
+
     public Image lensOverlayImage;
 
-    // Colors for each lens
+
     private Color redLensColor = new Color(1f, 0f, 0f, 0.2f); // Red with transparency
     private Color blueLensColor = new Color(0f, 0f, 1f, 0.2f); // Blue with transparency
     private Color greenLensColor = new Color(0f, 1f, 0f, 0.2f); // Green with transparency
@@ -41,7 +41,6 @@ public class PlayerController : MonoBehaviour
     {
         MovePlayer();
 
-        // Equip lenses
         if (Input.GetKeyDown(KeyCode.Alpha1)) EquipLens("RedLens");
         if (Input.GetKeyDown(KeyCode.Alpha2)) EquipLens("BlueLens");
         if (Input.GetKeyDown(KeyCode.Alpha3)) EquipLens("GreenLens");
@@ -63,22 +62,6 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Equipped: " + lensName);
 
         UpdateLensOverlay(lensName);
-
-        // Disable collisions for relevant walls based on the lens
-        foreach (var pair in lensWallMapping)
-        {
-            GameObject[] walls = GameObject.FindGameObjectsWithTag(pair.Value);
-            bool shouldDisableCollision = pair.Key == EquippedLens;
-
-            foreach (GameObject wall in walls)
-            {
-                Collider wallCollider = wall.GetComponent<Collider>();
-                if (wallCollider != null)
-                    wallCollider.enabled = !shouldDisableCollision;
-                else
-                    Debug.LogWarning("Wall " + wall.name + " does not have a collider!");
-            }
-        }
     }
 
     void UpdateLensOverlay(string lensName)

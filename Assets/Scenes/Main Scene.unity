@@ -1446,6 +1446,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 374289202576707483, guid: 78df1db2fbc8ec64f949fac0c05bf693, type: 3}
       insertIndex: -1
       addedObject: {fileID: 770913344}
+    - targetCorrespondingSourceObject: {fileID: 374289202576707483, guid: 78df1db2fbc8ec64f949fac0c05bf693, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 770913356}
   m_SourcePrefab: {fileID: 100100000, guid: 78df1db2fbc8ec64f949fac0c05bf693, type: 3}
 --- !u!1 &533747088 stripped
 GameObject:
@@ -2107,6 +2110,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &770913356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770913343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 810d9ee660216344c84120ac259906c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &819508583
 GameObject:
   m_ObjectHideFlags: 0
@@ -2422,7 +2437,6 @@ MonoBehaviour:
   redLensMaterial: {fileID: 2100000, guid: d516c70aac7ecfa449fecca81c888d48, type: 2}
   blueLensMaterial: {fileID: 2100000, guid: 20155b8315e14d940add763ca183e435, type: 2}
   greenLensMaterial: {fileID: 2100000, guid: 9b4ff1c580e962f45b9ee4326730030f, type: 2}
-  defaultMaterial: {fileID: 2100000, guid: 4591d58ac7cf85c4abf506e4497dfcd1, type: 2}
 --- !u!1 &995032985 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: e5860c25af9af8b49bd5df070e4c9ce9, type: 3}
