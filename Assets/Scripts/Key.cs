@@ -12,7 +12,7 @@ public class Key : MonoBehaviour
 
     void OpenDoor(GameObject door)
     {
-        // Disable the renderer and collider to make the door "disappear"
+
         Renderer doorRenderer = door.GetComponent<Renderer>();
         Collider doorCollider = door.GetComponent<Collider>();
 
