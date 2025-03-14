@@ -24,32 +24,28 @@ public class PickUpScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (heldObj == null)
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, pickUpRange))
             {
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, pickUpRange))
+                // Debug the raycast hit
+                Debug.DrawLine(transform.position, hit.point, Color.red, 2f); // Draw the ray in the scene
+
+                // Check for "PickUp" tag or crystal tags
+                if (hit.transform.CompareTag("PickUp"))
                 {
-                    // Check for "PickUp" tag or crystal tags
-                    if (hit.transform.CompareTag("PickUp"))
-                    {
-                        PickUpObject(hit.transform.gameObject);
-                    }
-                    else if (hit.transform.CompareTag("OrangeCrystal"))
-                    {
-                        CollectCrystal(hit.transform.gameObject, "Orange");
-                    }
-                    else if (hit.transform.CompareTag("BlueCrystal"))
-                    {
-                        CollectCrystal(hit.transform.gameObject, "Blue");
-                    }
+                    PickUpObject(hit.transform.gameObject);
                 }
-            }
-            else
-            {
-                if (canDrop)
+                else if (hit.transform.CompareTag("OrangeCrystal"))
                 {
-                    StopClipping();
-                    DropObject();
+                    CollectCrystal(hit.transform.gameObject, "Orange");
+                }
+                else if (hit.transform.CompareTag("BlueCrystal"))
+                {
+                    CollectCrystal(hit.transform.gameObject, "Blue");
+                }
+                else if (hit.transform.CompareTag("Light")) // Check for flashlight tag
+                {
+                    PickUpFlashlight(hit.transform.gameObject);
                 }
             }
         }
@@ -66,6 +62,23 @@ public class PickUpScript : MonoBehaviour
             }
         }
     }
+
+    void PickUpFlashlight(GameObject flashlightObj)
+    {
+        // First, call the existing PickUpObject() logic
+        PickUpObject(flashlightObj);
+
+        // Now, unhide the object in the player's hand, assuming it was previously hidden
+        if (heldObj != null)
+        {
+            // Check if the held object has been hidden (SetActive(false))
+            heldObj.SetActive(true); // Unhide the held object
+        }
+
+        // Optionally, you might want to perform other actions related to the flashlight
+        // Example: Enable flashlight functionality if required
+    }
+
 
     void PickUpObject(GameObject pickUpObj)
     {
