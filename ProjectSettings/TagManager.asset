@@ -13,6 +13,8 @@ TagManager:
   - Door
   - OrangeCrystal
   - BlueCrystal
+  - player
+  - Desk
   layers:
   - Default
   - TransparentFX
@@ -20,9 +22,9 @@ TagManager:
   - Hold
   - Water
   - UI
-  - Red
-  - Blue
-  - Green
+  - interactableLayer
+  - 
+  - 
   - 
   - 
   - 

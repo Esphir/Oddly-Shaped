@@ -1,6 +1,8 @@
-using System.Collections.Generic;
+using TMPro; // Import the TextMeshPro namespace
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,6 +11,9 @@ public class PlayerController : MonoBehaviour
     public float holdDistance = 0.7f;
     public float raycastDistance = 3f; // The distance of the raycast to detect items
     public GameObject CanvasObject;
+
+    // Change TextMesh to TextMeshProUGUI
+    public TextMeshProUGUI promptText; // Use TextMeshProUGUI instead of TextMesh
 
     private Rigidbody rb;
     public static string EquippedLens { get; private set; } = "None";
@@ -35,6 +40,12 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         UpdateLensOverlay("None");
+
+        // Display prompt text at the start
+        ShowPromptText("Why are we here? ... Escape the room");
+
+        // Start a coroutine to hide the prompt after a delay
+        StartCoroutine(HidePromptTextAfterDelay(5f)); // Hide after 5 seconds
     }
 
     void Update()
@@ -95,6 +106,26 @@ public class PlayerController : MonoBehaviour
         {
             hasBlueLens = true;
             Debug.Log("Blue lens ability unlocked!");
+        }
+    }
+
+    // Show prompt text on the screen
+    private void ShowPromptText(string message)
+    {
+        if (promptText != null)
+        {
+            promptText.text = message;
+            promptText.gameObject.SetActive(true);  // Ensure the text is visible
+        }
+    }
+
+    // Hide prompt text after a certain delay
+    private IEnumerator HidePromptTextAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (promptText != null)
+        {
+            promptText.gameObject.SetActive(false);  // Hide the prompt after the delay
         }
     }
 }
