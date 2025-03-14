@@ -15,6 +15,7 @@ TagManager:
   - BlueCrystal
   - player
   - Desk
+  - Light
   layers:
   - Default
   - TransparentFX
